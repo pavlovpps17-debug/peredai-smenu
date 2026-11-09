@@ -226,52 +226,59 @@ const closeSheet=()=>{if(voiceSession&&voiceSession.target==="sx-t")endVoice();$
 
 /* ---------- голосовой ввод ---------- */
 const VoiceAPI=window.SpeechRecognition||window.webkitSpeechRecognition;
+const IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
 let voiceSession=null;
-function endVoice(){
+function endVoice(msg){
  if(!voiceSession)return;
- const v=voiceSession;voiceSession=null;
- try{v.rec.onresult=null;v.rec.onerror=null;v.rec.onend=null;v.rec.stop()}catch(e){}
- const b=document.querySelector(`[data-act="voice"][data-v="${v.target}"]`);
+ const v=voiceSession;voiceSession=null;clearTimeout(v.wd);
+ try{v.rec.onstart=v.rec.onaudiostart=v.rec.onresult=v.rec.onerror=v.rec.onend=null}catch(e){}
+ try{v.rec.abort()}catch(e){try{v.rec.stop()}catch(_){}}
+ const b=document.querySelector('[data-act="voice"][data-v="'+v.target+'"]');
  if(b){b.classList.remove("listening");b.textContent="🎙";b.setAttribute("aria-label","Продиктовать запись")}
  const st=document.getElementById("voice-status-"+v.target);if(st)st.classList.remove("active");
+ if(msg)voiceMessage(v.target,msg);
 }
-function voiceMessage(target,message,active=false){
+function voiceMessage(target,message,active){
  const el=document.getElementById("voice-status-"+target);
- if(el){el.textContent=message;el.classList.toggle("active",active)}
+ if(el){el.textContent=message;el.classList.toggle("active",!!active)}
 }
 function startVoice(target){
  if(voiceSession){const current=voiceSession.target;endVoice();if(current===target){voiceMessage(target,"Запись остановлена. Проверь текст и сохрани.");return}}
  const field=document.getElementById(target);if(!field)return;
- if(!VoiceAPI){voiceMessage(target,"Браузер не поддерживает диктовку. Используй 🎤 на клавиатуре телефона.");toast("Распознавание речи недоступно в этом браузере");return}
- const rec=new VoiceAPI();rec.lang="ru-RU";rec.interimResults=true;rec.continuous=true;rec.maxAlternatives=1;
- const base=field.value.trim();const session={target,rec,base,final:""};voiceSession=session;
- const button=document.querySelector(`[data-act="voice"][data-v="${target}"]`);
+ const kb="Используй 🎤 на клавиатуре телефона.";
+ if(!VoiceAPI){voiceMessage(target,"Браузер не поддерживает диктовку. "+kb);return}
+ if(!window.isSecureContext){voiceMessage(target,"Микрофон работает только на https-странице. "+kb);return}
+ if(navigator.standalone){voiceMessage(target,"В режиме «На экран Домой» Safari не поддерживает диктовку. "+kb);return}
+ try{field.blur()}catch(e){}
+ let rec;try{rec=new VoiceAPI()}catch(e){voiceMessage(target,"Не удалось включить диктовку. "+kb);return}
+ /* iOS Safari плохо работает с continuous и interim: один фрагмент за нажатие */
+ rec.lang="ru-RU";rec.continuous=!IOS;rec.interimResults=!IOS;rec.maxAlternatives=1;
+ const session={target,rec,base:field.value.trim(),started:false,wd:0};voiceSession=session;
+ const button=document.querySelector('[data-act="voice"][data-v="'+target+'"]');
  if(button){button.classList.add("listening");button.textContent="■";button.setAttribute("aria-label","Остановить диктовку")}
- voiceMessage(target,"🔴 Слушаю… Нажми ■, чтобы остановить.",true);
+ voiceMessage(target,"🔴 Слушаю… Говорите. Нажмите ■ для остановки.",true);
+ const fire=()=>{const c=document.getElementById(target);if(c)c.dispatchEvent(new Event("input",{bubbles:true}))};
+ session.wd=setTimeout(()=>{if(voiceSession===session&&!session.started)endVoice("Микрофон не запустился. Проверьте: Настройки → Siri и диктовка, и разрешение микрофона для сайта. "+kb)},7000);
+ rec.onstart=rec.onaudiostart=()=>{if(voiceSession===session)session.started=true};
  rec.onresult=e=>{
-  if(voiceSession!==session)return;
-  let recognizedFinal="",interim="";
+  if(voiceSession!==session)return;session.started=true;
+  let fin="",interim="";
   for(let i=0;i<e.results.length;i++){
-   const phrase=e.results[i][0]?.transcript||"";
-   if(e.results[i].isFinal)recognizedFinal+=(recognizedFinal?" ":"")+phrase.trim();
-   else interim+=(interim?" ":"")+phrase.trim();
+   const p=((e.results[i][0]&&e.results[i][0].transcript)||"").trim();
+   if(e.results[i].isFinal)fin+=(fin?" ":"")+p;else interim+=(interim?" ":"")+p;
   }
-  session.final=recognizedFinal;
-  const current=document.getElementById(target);if(!current)return;
-  current.value=[session.base,recognizedFinal,interim].filter(Boolean).join(" ").trim();
-  current.dispatchEvent(new Event("input",{bubbles:true}));
+  const cur=document.getElementById(target);if(!cur)return;
+  cur.value=[session.base,fin,interim].filter(Boolean).join(" ").trim();
+  if(!interim)fire();
  };
  rec.onerror=e=>{
-  if(voiceSession!==session)return;
-  const labels={"not-allowed":"Нет доступа к микрофону. Разреши микрофон в настройках браузера.","service-not-allowed":"Сервис распознавания недоступен.","audio-capture":"Микрофон не найден.","no-speech":"Речь не распознана. Попробуй ещё раз.","network":"Не удалось связаться с сервисом распознавания речи.","language-not-supported":"Русский язык не поддерживается этим браузером."};
+  if(voiceSession!==session||e.error==="aborted")return;
+  const labels={"not-allowed":"Нет доступа к микрофону. Разрешите микрофон для сайта и включите Siri и диктовку в настройках iPhone.","service-not-allowed":"Диктовка выключена: включите «Диктовка» и Siri в настройках iPhone.","audio-capture":"Микрофон не найден.","no-speech":"Речь не распознана. Попробуйте ещё раз.","network":"Нет связи с сервисом распознавания речи.","language-not-supported":"Русский язык не поддерживается этим браузером."};
   const message=labels[e.error]||"Не удалось распознать речь.";
-  endVoice();voiceMessage(target,message);toast(message);
+  endVoice(message);toast(message);
  };
- rec.onend=()=>{
-  if(voiceSession!==session)return;
-  endVoice();voiceMessage(target,"Диктовка завершена. Проверь текст и сохрани.");
- };
- try{rec.start()}catch(e){endVoice();voiceMessage(target,"Не удалось включить микрофон. Попробуй другой браузер.");toast("Не удалось запустить диктовку")}
+ rec.onend=()=>{if(voiceSession!==session)return;fire();endVoice("Диктовка завершена. Проверьте текст и сохраните.")};
+ try{rec.start()}catch(e){endVoice("Не удалось включить микрофон. "+kb);toast("Не удалось запустить диктовку")}
 }
 
 /* ---------- действия ---------- */
