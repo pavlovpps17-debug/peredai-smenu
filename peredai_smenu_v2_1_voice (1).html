@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Передай смену 2.1</title>
+<style>
+:root{--bg:#eceff3;--sf:#fff;--ink:#16212c;--mu:#657384;--ln:#d8dee6;--ac:#1d4ed8;--acf:#fff;--cr:#d92d20;--im:#d99100;--ok:#16883c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f151c;--sf:#18212b;--ink:#e8edf2;--mu:#8d9bab;--ln:#2a3644;--ac:#6b95ff;--acf:#0b1220;--cr:#ff6b5e;--im:#f2b73a;--ok:#4cc47a}}
+:root[data-theme="dark"]{--bg:#0f151c;--sf:#18212b;--ink:#e8edf2;--mu:#8d9bab;--ln:#2a3644;--ac:#6b95ff;--acf:#0b1220;--cr:#ff6b5e;--im:#f2b73a;--ok:#4cc47a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 "Segoe UI Variable","Segoe UI",-apple-system,Roboto,system-ui,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--sf);z-index:10}
+h1,h2,h3{font-family:Bahnschrift,"DIN Alternate","Roboto Condensed","Segoe UI",sans-serif;margin:0 0 8px;letter-spacing:.2px}
+h1{font-size:20px;flex:1}h2{font-size:19px}h3{font-size:16px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--sf);border-bottom:1px solid var(--ln);display:flex;align-items:center;gap:8px;padding:10px 12px}
+header select{width:auto;font-weight:600}
+#bell{position:relative;border:1px solid var(--ln);background:var(--bg);border-radius:10px;padding:8px 10px;font-size:18px;color:var(--ink)}
+#bn{position:absolute;top:-6px;right:-6px;background:var(--cr);color:#fff;border-radius:99px;font-size:11px;padding:1px 6px;font-weight:700}
+main{max-width:720px;margin:0 auto;padding:12px 12px 170px}
+.card{background:var(--sf);border:1px solid var(--ln);border-left:7px solid var(--ln);border-radius:12px;margin:0 0 8px;overflow:hidden}
+.card.crit{border-left-color:var(--cr)}.card.imp{border-left-color:var(--im)}.card.done{opacity:.6}
+.hd{padding:10px 12px;cursor:pointer}
+.tx{margin:0 0 6px;overflow-wrap:anywhere}
+.mt{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:13px;color:var(--mu);align-items:center}
+.mt b{color:var(--ink)}
+.pt{padding:1px 8px;border-radius:99px;font-size:12px;border:1px solid var(--ln)}
+.pt.crit{background:var(--cr);color:#fff;border-color:var(--cr)}.pt.imp{background:var(--im);color:#1b1300;border-color:var(--im)}
+.late{color:var(--cr);font-weight:700}
+.dt{padding:10px 12px 12px;display:grid;gap:10px;border-top:1px dashed var(--ln)}
+.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ch{border:1px solid var(--ln);background:var(--sf);color:var(--ink);border-radius:99px;padding:8px 14px;font:inherit;font-size:14px;cursor:pointer;min-height:40px}
+.ch.on{background:var(--ac);color:var(--acf);border-color:var(--ac)}
+.ch.crit.on{background:var(--cr);color:#fff;border-color:var(--cr)}.ch.imp.on{background:var(--im);color:#1b1300;border-color:var(--im)}
+.ch.y{border-color:var(--ok);color:var(--ok)}.ch.n{border-color:var(--cr);color:var(--cr)}.ch.dg{border-color:var(--cr);color:var(--cr)}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--ln);border-radius:10px;padding:9px 10px;width:100%}
+input[type=checkbox]{width:20px;height:20px}
+.bar{display:flex;gap:6px;margin-bottom:10px}.bar input{flex:2}.bar select{flex:1;min-width:0}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--sf);border-top:1px solid var(--ln);padding-bottom:env(safe-area-inset-bottom,0px);z-index:6}
+nav button{flex:1;border:0;background:none;color:var(--mu);padding:8px 0;font:inherit;font-size:12px;cursor:pointer}
+nav button.on{color:var(--ac);font-weight:700}nav i{display:block;font-style:normal;font-size:20px}
+#fab{position:fixed;right:14px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:7;border:0;border-radius:99px;background:var(--ac);color:var(--acf);font:inherit;font-size:18px;font-weight:700;padding:16px 24px;box-shadow:0 6px 18px #0004;cursor:pointer}
+.ov{position:fixed;inset:0;background:#0007;z-index:20}
+.sh{position:fixed;left:0;right:0;bottom:0;max-height:92vh;overflow:auto;background:var(--sf);border-radius:20px 20px 0 0;padding:16px 14px calc(16px + env(safe-area-inset-bottom,0px));z-index:21;max-width:720px;margin:0 auto;display:grid;gap:10px}
+.big{border:0;background:var(--ac);color:var(--acf);border-radius:14px;padding:16px;font:inherit;font-size:18px;font-weight:700;cursor:pointer;width:100%}
+.lb,.mu{color:var(--mu);font-size:13px}.mu{margin:2px 0}
+.tg{display:flex;gap:8px;align-items:center}
+.st{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}
+.sc{background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:10px}.sc b{font-size:28px;display:block;font-family:Bahnschrift,"Segoe UI",sans-serif}
+.sc.crit b,.sc.late b{color:var(--cr)}
+.pn{background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:12px;margin-bottom:10px;display:grid;gap:8px}
+.mi{border-left:5px solid var(--ln);padding:4px 8px;font-size:14px}.mi.crit{border-color:var(--cr)}.mi.imp{border-color:var(--im)}
+.cm{font-size:14px;background:var(--bg);border-radius:8px;padding:6px 8px}
+.al{display:block;width:100%;text-align:left;border:1px solid var(--ln);background:var(--bg);color:var(--ink);border-radius:10px;padding:12px;font:inherit}
+.al.crit{border-color:var(--cr)}
+.sep{font-weight:700;color:var(--cr);margin:10px 0 6px}
+.empty{text-align:center;color:var(--mu);padding:30px 10px}
+.mr{display:flex;gap:6px;align-items:center}
+#toast{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:99px;z-index:30;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.on{opacity:1}
+details summary{cursor:pointer;color:var(--mu);font-size:14px}
+body{font-size:15px;line-height:1.3}
+header{padding:6px 10px}h1{font-size:17px;margin:0}header select{padding:5px 8px}#bell{padding:5px 8px;font-size:16px}
+main{padding:8px 8px 120px}
+.card{margin:0 0 6px;border-left-width:5px;border-radius:10px}
+.hd{padding:7px 10px}.tx{margin:0 0 4px;font-size:15px}
+.card:not(.open) .tx{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.mt{font-size:12px;gap:2px 8px}
+.dt{padding:8px 10px 10px;gap:8px}.row{gap:5px}
+.ch{padding:5px 11px;min-height:34px;font-size:13px}
+input,select,textarea{padding:7px 9px}
+.pn{padding:9px;margin-bottom:8px;gap:6px}.bar{margin-bottom:8px}
+nav button{padding:5px 0;font-size:11px}nav i{font-size:17px}
+#fab{width:56px;height:56px;padding:0;font-size:30px;line-height:1;bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+.sh{padding:12px 12px calc(12px + env(safe-area-inset-bottom,0px));gap:8px}
+.big{padding:13px;font-size:16px}
+.st{gap:6px;margin-bottom:8px}.sc{padding:7px 9px}.sc b{font-size:22px}
+.hrs{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}.hrs .ch{padding:5px 0;text-align:center}
+.mns{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}.mns .ch{padding:5px 0;text-align:center}
+.dts{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px}.dts .ch{flex:none}
+
+/* Desktop dashboard and improved layout */
+@media(min-width:980px){main{max-width:1160px;padding:18px 22px 115px}.desktop-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(280px,1fr);gap:16px}.desktop-grid>div{min-width:0}.desktop-grid .pn{margin-bottom:12px}.bar{max-width:100%}.card .tx{font-size:15px}nav{left:50%;transform:translateX(-50%);max-width:1160px;border-left:1px solid var(--ln);border-right:1px solid var(--ln)}.st{grid-template-columns:repeat(4,1fr)}#fab{right:max(18px,calc((100vw - 1140px)/2));bottom:84px}}
+#main .welcome{font-weight:700;font-size:18px;margin:5px 0 12px}.compact-note{font-size:13px;color:var(--mu)}.quickarea{width:100%;min-height:75px;resize:vertical}.action-mini{border:1px solid var(--ln);border-radius:9px;background:var(--sf);color:var(--ink);padding:9px 12px;cursor:pointer;font:inherit}.action-mini.primary{background:var(--ac);color:var(--acf);border-color:var(--ac)}.action-mini:disabled{opacity:.5;cursor:not-allowed}.action-mini:focus-visible,.ch:focus-visible,.big:focus-visible{outline:3px solid var(--ac);outline-offset:2px}.card{overflow-wrap:anywhere}.sc{overflow:hidden}.dash-snapshot{max-height:480px;overflow-y:auto}.checklabel{display:flex;align-items:center;gap:8px}.checklabel input{width:auto}.kpihelp{font-size:12px;color:var(--mu)}
+/* Voice dictation controls */
+.voice-input{position:relative}
+.voice-input textarea{padding-right:56px}
+.voice-btn{position:absolute;right:8px;top:8px;min-width:43px;height:43px;border:1px solid var(--ln);border-radius:12px;background:var(--sf);color:var(--ink);font-size:22px;cursor:pointer;display:grid;place-items:center}
+.voice-btn.listening{background:var(--cr);color:white;border-color:var(--cr);animation:voice-pulse 1.1s infinite}
+.voice-btn:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.voice-hint{font-size:12px;color:var(--mu);min-height:15px}
+.voice-hint.active{color:var(--cr);font-weight:600}
+@keyframes voice-pulse{50%{box-shadow:0 0 0 5px color-mix(in srgb,var(--cr) 22%,transparent)}}
+@media(prefers-reduced-motion:reduce){.voice-btn.listening{animation:none}}
+</style></head><body>
+<header><h1>↔ Передай смену <small style="font-size:10px;color:var(--mu);font-weight:400">2.1</small></h1><select id="who" data-ch="who" aria-label="Роль"><option>Паша</option><option>Дима</option><option>Артём</option></select><button id="bell" data-act="bell" aria-label="Уведомления">🔔<span id="bn"></span></button></header>
+<main id="main"></main>
+<button id="fab" data-act="add" aria-label="Записать">＋</button>
+<nav id="nav"></nav>
+<div id="sheet"></div><div id="toast"></div>
+<script>
+const K="ps_v2",BK="ps_v2_bak",SPK=["Паша","Дима"];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const PR={crit:"Критично",imp:"Важно",plan:"Планово"},ST={new:"Новая",work:"В работе",wait:"Ждём результата",done:"Выполнена"};
+const FL={meet:"Встреча",came:"Приехал",tin:"Trade-in выкуплен",iss:"Авто выдан"};
+const def=()=>({managers:[],items:[],ho:[],user:"Паша",theme:"auto",lead:60});
+let S=def(),ui={tab:"dash",q:"",mgr:"",prio:"",fst:"act",mine:false,open:null,done:null,pa:null},sh=null,tt;
+try{const r=localStorage.getItem(K)||localStorage.getItem("ps_v1");if(r)S=Object.assign(def(),JSON.parse(r));
+const b=JSON.parse(localStorage.getItem(BK)||"null");if(r&&(!b||Date.now()-b.at>864e5))localStorage.setItem(BK,JSON.stringify({at:Date.now(),d:S}))}catch(e){}
+function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){toast("Не удалось сохранить: хранилище недоступно")}}
+const up=()=>{save();render()};
+const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-3);
+// One-time migration from the earlier ChatGPT prototype if no Claude/v2 data exists.
+try{if(!localStorage.getItem(K)&&!localStorage.getItem("ps_v1")){
+ const old=JSON.parse(localStorage.getItem("peredai_smenu_v1_local")||"null");
+ if(old&&Array.isArray(old.entries)&&Array.isArray(old.managers)){
+  S.managers=old.managers.map(n=>({id:uid(),name:n}));
+  const aliases={spk1:"Паша",spk2:"Дима",rop:"Артём"};S.user=aliases[old.role]||"Паша";
+  S.items=old.entries.map(e=>{let m=S.managers.find(x=>x.name===e.manager);const isTask=e.type==="task";const date=Date.parse(e.created);return {id:e.id||uid(),text:e.text||"",mgr:m?.id||"",mn:e.manager||"",author:aliases[e.author]||e.author||"Паша",at:Number.isFinite(date)?date:Date.now(),prio:({critical:"crit",high:"imp",normal:"plan"})[e.priority]||"plan",task:isTask,st:e.status==="done"?"done":"new",due:e.due?loc(new Date(e.due)):"",ctrl:"",fl:{},wl:"",car:"",comments:e.comment?[{a:aliases[e.author]||"СПК",at:Date.now(),t:e.comment}]:[],hist:[],result:e.status==="done"?e.comment||"Закрыто в старой версии":"",rop:false,seen:[]}});
+  S.ho=(old.handovers||[]).map(h=>({id:h.id||uid(),from:aliases[h.from]||"Паша",to:aliases[h.to]||"Дима",at:Date.parse(h.at)||Date.now(),note:h.note||"",acc:!!h.acceptedAt,accBy:h.acceptedAt?aliases[h.to]||"Дима":"",accAt:Date.parse(h.acceptedAt)||null,accNote:"",snap:[],cnt:{act:h.openCount||0,crit:0,od:0,soon:0,neu:0}}));
+  localStorage.setItem(K,JSON.stringify(S));
+ }
+}}catch(e){}
+
+const mname=i=>(S.managers.find(m=>m.id===i.mgr)||{}).name||i.mn||"—";
+const fmt=t=>new Date(t).toLocaleString("ru",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+const loc=d=>{const p=n=>String(n).padStart(2,"0");return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+"T"+p(d.getHours())+":"+p(d.getMinutes())};
+const active=i=>i.task&&i.st!=="done";
+const over=i=>active(i)&&i.due&&new Date(i.due)<new Date();
+const soon=i=>active(i)&&i.due&&!over(i)&&new Date(i.due)-Date.now()<S.lead*6e4;
+const log=(i,t)=>{(i.hist=i.hist||[]).push({a:S.user,t,at:Date.now()})};
+const find=id=>S.items.find(x=>x.id===id);
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2400)}
+function theme(){const r=document.documentElement;S.theme==="auto"?r.removeAttribute("data-theme"):r.setAttribute("data-theme",S.theme)}
+function detect(t){const w=t.toLowerCase().split(/[^а-яёa-z0-9]+/);for(const m of S.managers){const s=m.name.toLowerCase().trim();if(s.length<2)continue;const st=s.length>=5?s.slice(0,-2):s.length===4?s.slice(0,-1):s;if(w.some(x=>x.startsWith(st)&&x.length<=s.length+2))return m.id}return""}
+
+/* ---------- карточка ---------- */
+function card(i){const o=ui.open===i.id,od=over(i);
+const fl=Object.keys(FL).filter(k=>i.fl&&i.fl[k]!=null).map(k=>`<span>${i.fl[k]?"✓":"✗"} ${FL[k]}</span>`).join("");
+return `<article class="card ${i.prio}${i.st==="done"?" done":""}${o?" open":""}"><div class="hd" data-act="open" data-id="${i.id}"><p class="tx">${esc(i.text)}</p><div class="mt"><b>${esc(mname(i))}</b><span>${esc(i.author)}, ${fmt(i.at)}</span>${i.prio!=="plan"?`<span class="pt ${i.prio}">${PR[i.prio]}</span>`:""}${i.task?`<span class="pt">${ST[i.st]}</span>`:""}${i.due?`<span class="${od?"late":""}">⏰ ${fmt(i.due)}${od?" просрочено":""}</span>`:""}${i.ctrl?`<span>контроль: ${i.ctrl}</span>`:""}${(i.comments||[]).length?`<span>💬 ${i.comments.length}</span>`:""}${fl}</div></div>${o?det(i):""}</article>`}
+function det(i){const I=`data-id="${i.id}"`;
+return `<div class="dt">
+${i.task?`<div class="row">${Object.keys(ST).map(k=>`<button class="ch ${i.st===k?"on":""}" data-act="st" ${I} data-v="${k}">${ST[k]}</button>`).join("")}</div>`:`<div class="row"><button class="ch on" data-act="totask" ${I}>Взять на контроль</button></div>`}
+${ui.done===i.id?`<div class="row"><input id="rs" placeholder="Результат: чем закончилось?" style="flex:1"><button class="ch on" data-act="fin" ${I}>Закрыть</button></div>`:""}
+${i.result?`<div><b>Результат:</b> ${esc(i.result)}</div>`:""}
+<div class="row">${Object.keys(PR).map(k=>`<button class="ch ${k} ${i.prio===k?"on":""}" data-act="pr" ${I} data-v="${k}">${PR[k]}</button>`).join("")}</div>
+${i.task?`<div class="row"><select data-ch="ctrl" ${I} style="flex:1"><option value="">Контроль: никто</option>${SPK.map(n=>`<option ${i.ctrl===n?"selected":""}>${n}</option>`).join("")}</select><input type="datetime-local" data-ch="due" ${I} value="${i.due||""}" style="flex:1"></div>`:""}
+<div class="row">${Object.keys(FL).map(k=>{const v=i.fl&&i.fl[k];return `<button class="ch ${v===true?"y":v===false?"n":""}" data-act="fl" ${I} data-v="${k}">${v===true?"✓":v===false?"✗":"○"} ${FL[k]}</button>`}).join("")}</div>
+<div class="row"><input data-ch="wl" ${I} placeholder="Рабочий лист №" value="${esc(i.wl||"")}" style="flex:1"><input data-ch="car" ${I} placeholder="Модель" value="${esc(i.car||"")}" style="flex:1"></div>
+${(i.comments||[]).map(c=>`<div class="cm"><b>${esc(c.a)}</b> ${fmt(c.at)}<br>${esc(c.t)}</div>`).join("")}
+<div class="row"><input id="cm" placeholder="Комментарий" style="flex:1"><button class="ch on" data-act="cm" ${I}>Отправить</button></div>
+<details><summary>История (${(i.hist||[]).length})</summary>${(i.hist||[]).slice().reverse().map(h=>`<div class="mu">${fmt(h.at)} ${esc(h.a)}: ${esc(h.t)}</div>`).join("")}</details>
+<div class="row"><button class="ch" data-act="edit" ${I}>✎ Править</button><button class="ch dg" data-act="del" ${I}>${ui.pa===i.id?"Точно удалить?":"Удалить"}</button></div></div>`}
+
+/* ---------- экраны ---------- */
+function dashboard(){const act=S.items.filter(active),critical=act.filter(i=>i.prio==="crit"),late=act.filter(over);const review=act.slice().sort((a,b)=>(Number(over(b))-Number(over(a)))||({crit:0,imp:1,plan:2}[a.prio]-{crit:0,imp:1,plan:2}[b.prio])||(a.due||"z").localeCompare(b.due||"z"));
+return `<div class="welcome">${S.user==="Артём"?"Пульт руководителя":"Моя смена"} <span class="compact-note">· ${new Date().toLocaleDateString("ru-RU",{day:"numeric",month:"long"})}</span></div>
+<div class="st"><div class="sc"><b>${act.length}</b>На контроле</div><div class="sc crit"><b>${critical.length}</b>Критично</div><div class="sc late"><b>${late.length}</b>Просрочено</div><div class="sc"><b>${S.items.filter(i=>!i.task).length}</b>Событий</div></div>
+<div class="desktop-grid"><div><div class="pn"><h2>Закинуть в смену</h2><div class="voice-input"><textarea class="quickarea" id="quick" placeholder="Вологда, Жук на Jolion, перебиваем Ярославль, менеджер Даня"></textarea><button class="voice-btn" type="button" data-act="voice" data-v="quick" aria-label="Продиктовать запись" title="Продиктовать запись">🎙</button></div><div class="voice-hint" id="voice-status-quick" aria-live="polite">Можно продиктовать запись голосом</div><div class="row"><select id="qmgr" aria-label="Менеджер" style="flex:1;min-width:135px"><option value="">Выбери менеджера</option>${S.managers.map(m=>`<option value="${m.id}">${esc(m.name)}</option>`).join("")}</select><select id="qprio" style="flex:1;min-width:112px" aria-label="Приоритет"><option value="plan">Планово</option><option value="imp">Важно</option><option value="crit">Критично</option></select><label class="checklabel"><input type="checkbox" id="qtask"> Контроль</label><button class="action-mini primary" data-act="qsave">＋ Записать</button></div><div class="kpihelp">Только описание и менеджер. Остальное необязательно. Можно указать имя в тексте.</div></div><h3>Требует внимания</h3><div class="dash-snapshot">${review.length?review.slice(0,12).map(card).join(""):'<div class="empty">Активных задач пока нет.</div>'}</div><button class="action-mini" data-act="tab" data-v="ctl">Все задачи →</button></div>
+<div><div class="pn"><h3>Передача смены</h3>${(()=>{const h=S.ho[S.ho.length-1];return h&&!h.acc?`<span class="late">${h.to===S.user?"Вам передают смену":"Ожидается приёмка"}: ${esc(h.from)} → ${esc(h.to)}</span>`:"Нет ожидающей приёмки"})()}<p class="mu">Незакрытые задачи видны всегда. Подтверждение передачи фиксируется отдельно.</p><button class="action-mini" data-act="tab" data-v="ho">Открыть передачу ⇄</button></div><div class="pn"><h3>Последние события</h3>${S.items.slice().sort((a,b)=>b.at-a.at).slice(0,6).map(mini).join("")||'<div class="mu">Нет записей</div>'}</div>${S.user==="Артём"?`<button class="big" data-act="tab" data-v="rop">Открыть пульт РОПа</button>`:""}</div></div>`}
+
+function feedList(){const q=ui.q.toLowerCase();
+const L=S.items.filter(i=>(!ui.mgr||i.mgr===ui.mgr)&&(!ui.prio||i.prio===ui.prio)&&(!q||(i.text+" "+mname(i)).toLowerCase().includes(q))).sort((a,b)=>b.at-a.at);
+return L.length?L.map(card).join(""):`<div class="empty">${S.items.length?"Ничего не найдено":"Пока пусто. Нажмите «Записать» и опишите ситуацию в одну строку."}</div>`}
+function feed(){return `${S.managers.length?"":`<div class="pn">Сначала добавьте менеджеров: «Ещё» → «Менеджеры».</div>`}<div class="bar"><input id="q" type="search" placeholder="Поиск" value="${esc(ui.q)}"><select data-ch="fm"><option value="">Все менеджеры</option>${S.managers.map(m=>`<option value="${m.id}" ${ui.mgr===m.id?"selected":""}>${esc(m.name)}</option>`).join("")}</select><select data-ch="fp"><option value="">Все</option>${Object.keys(PR).map(k=>`<option value="${k}" ${ui.prio===k?"selected":""}>${PR[k]}</option>`).join("")}</select></div><div id="list">${feedList()}</div>`}
+function ctl(){const f=ui.fst,rank={crit:0,imp:1,plan:2};
+let L=S.items.filter(i=>i.task&&(f==="act"?i.st!=="done":i.st===f));if(ui.mine)L=L.filter(i=>i.ctrl===S.user);
+L.sort((a,b)=>(over(b)-over(a))||(rank[a.prio]-rank[b.prio])||((a.due||"z").localeCompare(b.due||"z")));
+const od=L.filter(over),rest=L.filter(i=>!over(i)),n=k=>S.items.filter(i=>i.task&&(k==="act"?i.st!=="done":i.st===k)).length;
+return `<div class="row" style="margin-bottom:10px">${[["act","Активные"],["new","Новые"],["work","В работе"],["wait","Ждём"],["done","Выполнены"]].map(([k,l])=>`<button class="ch ${f===k?"on":""}" data-act="fst" data-v="${k}">${l} ${n(k)}</button>`).join("")}<button class="ch ${ui.mine?"on":""}" data-act="mine">Мои</button></div>${od.length?`<div class="sep">Просрочено (${od.length})</div>${od.map(card).join("")}`:""}${rest.map(card).join("")}${L.length?"":`<div class="empty">Нет задач в этом списке.</div>`}`}
+const summ=since=>{const act=S.items.filter(active);return{act,crit:act.filter(i=>i.prio==="crit"),od:act.filter(over),soon:act.filter(soon),neu:S.items.filter(i=>i.at>since),cm:act.filter(i=>(i.comments||[]).some(c=>c.at>since))}};
+const mini=i=>`<div class="mi ${i.prio}"><b>${esc(mname(i))}</b> ${esc(i.text.length>90?i.text.slice(0,90)+"…":i.text)}${i.due?` <span class="${over(i)?"late":"mu"}">до ${fmt(i.due)}</span>`:""}</div>`;
+const sec=(t,l)=>l.length?`<div class="pn"><h3>${t} (${l.length})</h3>${l.map(mini).join("")}</div>`:"";
+function hoLog(n){return S.ho.slice(-n).reverse().map(h=>`<div class="pn"><b>${h.from} → ${h.to}</b><span class="mu">${fmt(h.at)}, задач: ${h.cnt.act}, критичных: ${h.cnt.crit}, просрочено: ${h.cnt.od}</span>${h.note?`<div>${esc(h.note)}</div>`:""}<span class="${h.acc?"mu":"late"}">${h.acc?`Принял ${h.accBy}, ${fmt(h.accAt)}${h.accNote?": "+esc(h.accNote):""}`:"Ждёт подтверждения"}</span><details><summary>Состав</summary>${h.snap.map(s=>`<div class="mi ${s.p}"><b>${esc(s.m)}</b> ${esc(s.t.slice(0,90))}</div>`).join("")}</details></div>`).join("")||`<div class="empty">Передач пока не было.</div>`}
+function hov(){const me=S.user,last=S.ho[S.ho.length-1],pend=last&&!last.acc?last:null,s=summ(last?last.at:0);let h="";
+if(pend&&pend.to===me)h=`<div class="pn"><h2>Вам передают смену</h2><span class="mu">От ${pend.from}, ${fmt(pend.at)}</span>${pend.note?`<div>${esc(pend.note)}</div>`:""}${pend.snap.map(x=>`<div class="mi ${x.p}"><b>${esc(x.m)}</b> ${esc(x.t.slice(0,90))}</div>`).join("")}<input id="hn" placeholder="Комментарий при приёмке"><button class="big" data-act="hoacc" data-id="${pend.id}">Принять смену</button></div>`;
+else if(me==="Артём")h=`<div class="pn mu">Руководитель смены не передаёт и не принимает. Журнал ниже.</div>`;
+else if(pend&&pend.from===me)h=`<div class="pn"><b>Смена передана. Ждём подтверждения от ${pend.to}.</b><span class="mu">Задачи остаются в общей базе и доступны сразу.</span></div>`;
+else h=`<div class="pn"><h2>Сводка к передаче</h2><span class="mu">Задачи не пропадут, даже если смену не передавать.</span></div>${sec("Критичные",s.crit)}${sec("Просрочено",s.od)}${sec("Срок скоро",s.soon)}${sec("Остальные в работе",s.act.filter(i=>i.prio!=="crit"&&!over(i)&&!soon(i)))}${sec("Новые события за смену",s.neu.filter(i=>!i.task))}${sec("С новыми комментариями",s.cm)}<input id="hn" placeholder="Важное словами для сменщика"><button class="big" data-act="hosend">Передать смену → ${SPK.find(n=>n!==me)}</button>`;
+return h+`<h3 style="margin-top:14px">Журнал передач</h3>`+hoLog(10)}
+function ropv(){const a=S.items.filter(active),cnt=(f)=>a.filter(f).length;
+return `<div class="st"><div class="sc"><b>${a.length}</b>Активных</div><div class="sc crit"><b>${cnt(i=>i.prio==="crit")}</b>Критичных</div><div class="sc late"><b>${cnt(over)}</b>Просрочено</div><div class="sc"><b>${cnt(i=>i.st==="wait")}</b>Ждём результата</div></div>
+<button class="big" data-act="addrop" style="margin-bottom:10px">Новое поручение</button>
+<div class="pn"><h3>По менеджерам</h3>${S.managers.map(m=>{const l=a.filter(i=>i.mgr===m.id);return `<div class="mr"><b style="flex:1">${esc(m.name)}</b><span>${l.length}</span><span class="late">${l.filter(i=>i.prio==="crit").length?"🔴"+l.filter(i=>i.prio==="crit").length:""} ${l.filter(over).length?"⏰"+l.filter(over).length:""}</span></div>`}).join("")||`<span class="mu">Менеджеров нет.</span>`}</div>
+<div class="pn"><h3>Кто контролирует</h3>${SPK.map(n=>`<div class="mr"><b style="flex:1">${n}</b><span>${cnt(i=>i.ctrl===n)}</span></div>`).join("")}<div class="mr"><b style="flex:1">Никто</b><span>${cnt(i=>!i.ctrl)}</span></div></div>
+<h3>Горит</h3>${a.filter(i=>i.prio==="crit"||over(i)).map(card).join("")||`<div class="empty">Критичного и просроченного нет.</div>`}
+<h3 style="margin-top:14px">Передачи смен</h3>${hoLog(5)}`}
+function set(){return `<div class="pn"><h3>Менеджеры</h3>${S.managers.map(m=>`<div class="mr"><input data-ch="rn" data-id="${m.id}" value="${esc(m.name)}"><button class="ch dg" data-act="delm" data-id="${m.id}">${ui.pa===m.id?"Точно?":"Удалить"}</button></div>`).join("")||`<span class="mu">Список пуст.</span>`}<div class="mr"><input id="nm" placeholder="Новый менеджер"><button class="ch on" data-act="addm">Добавить</button></div></div>
+<div class="pn"><h3>Вид</h3><select data-ch="theme"><option value="auto" ${S.theme==="auto"?"selected":""}>Тема: как в системе</option><option value="light" ${S.theme==="light"?"selected":""}>Светлая</option><option value="dark" ${S.theme==="dark"?"selected":""}>Тёмная</option></select><select data-ch="lead"><option value="30" ${S.lead==30?"selected":""}>Напоминать за 30 мин</option><option value="60" ${S.lead==60?"selected":""}>Напоминать за 1 час</option><option value="120" ${S.lead==120?"selected":""}>Напоминать за 2 часа</option></select></div>
+<div class="pn"><h3>Резервная копия</h3><div class="row"><button class="ch on" data-act="download">Скачать JSON</button><button class="ch" data-act="exp">Скопировать</button><button class="ch" data-act="imp">Восстановить из текста</button><button class="ch" data-act="rest">Из автокопии</button></div><textarea id="bk" rows="4" placeholder="Здесь появится копия. Для восстановления вставьте текст сюда."></textarea><input type="file" id="backupFile" accept=".json,application/json"><div class="mu">Перед восстановлением скачай резервную копию текущих данных.</div></div>
+<div class="pn mu">Данные хранятся только в этом браузере (v2 читает локальные записи Claude v1). Переключение Паша, Дима, Артём — демонстрация ролей, а не вход по паролю. Уведомления работают, пока приложение открыто. Общая база и синхронизация устройств появятся с сервером.</div>`}
+
+/* ---------- уведомления ---------- */
+function alerts(){const a=[],me=S.user,A=S.items.filter(active),n=(x,t,tab,c)=>x&&a.push({t:t.replace("#",x),tab,c});
+n(A.filter(over).length,"Просрочено задач: #","ctl","crit");n(A.filter(i=>i.prio==="crit").length,"Критичных в работе: #","ctl","crit");n(A.filter(soon).length,"Срок скоро: #","ctl","");
+A.filter(i=>i.rop&&i.author!==me&&!(i.seen||[]).includes(me)).forEach(i=>a.push({t:"Новое поручение РОПа: "+esc(i.text.slice(0,60)),tab:"ctl",c:"crit"}));
+const l=S.ho[S.ho.length-1];if(l&&!l.acc&&l.to===me)a.push({t:"Смена от "+l.from+" ждёт подтверждения",tab:"ho",c:"crit"});return a}
+const badge=()=>{const n=alerts().length;$("#bn").textContent=n||"";$("#bn").style.display=n?"":"none"};
+
+/* ---------- каркас ---------- */
+function render(){if(voiceSession&&voiceSession.target==="quick")endVoice();const rop=S.user==="Артём";if(ui.tab==="rop"&&!rop)ui.tab="feed";
+const tabs=[["dash","Главная","▦"],["feed","Лента","☰"],["ctl","Контроль","◉"]].concat(rop?[["rop","Пульт","▦"]]:[]).concat([["ho","Смена","⇄"],["set","Ещё","⚙"]]);
+$("#nav").innerHTML=tabs.map(t=>`<button class="${ui.tab===t[0]?"on":""}" data-act="tab" data-v="${t[0]}"><i>${t[2]}</i>${t[1]}</button>`).join("");
+$("#who").value=S.user;$("#main").innerHTML=({dash:dashboard,feed,ctl,ho:hov,rop:ropv,set})[ui.tab]();$("#fab").style.display=ui.tab==="set"?"none":"";badge()}
+
+/* ---------- форма записи ---------- */
+function openSheet(o){sh=Object.assign({id:null,mgr:"",prio:"plan",task:false,due:"",rop:false,ctrl:"",manual:false,addm:!S.managers.length},o);
+const i=sh.id&&find(sh.id);
+$("#sheet").innerHTML=`<div class="ov" data-act="sx"></div><div class="sh"><h2>${i?"Правка записи":sh.rop?"Поручение РОПа":"Новая запись"}</h2><div class="voice-input"><textarea id="sx-t" rows="2" placeholder="Что произошло? Например: клиент из Вологды сдаёт Жука, перебиваем Ярославль, менеджер Даня"></textarea><button class="voice-btn" type="button" data-act="voice" data-v="sx-t" aria-label="Продиктовать задачу" title="Продиктовать задачу">🎙</button></div><div class="voice-hint" id="voice-status-sx-t" aria-live="polite">Нажми на микрофон и говори</div><div class="lb">Менеджер</div><div class="row" id="sx-m"></div><div class="lb">Срочность</div><div class="row" id="sx-p"></div><label class="tg"><input type="checkbox" id="sx-k"> Взять на контроль</label><div class="row" id="sx-r"></div><div id="sx-q"></div><details><summary>Детали</summary><div class="row" style="margin-top:8px"><input id="sx-w" placeholder="Рабочий лист №" style="flex:1"><input id="sx-a" placeholder="Модель" style="flex:1"></div></details><button class="big" data-act="sxsave">Сохранить</button></div>`;
+if(i){$("#sx-t").value=i.text;$("#sx-w").value=i.wl||"";$("#sx-a").value=i.car||""}
+paint();setTimeout(()=>$("#sx-t").focus(),60)}
+function paint(){
+$("#sx-m").innerHTML=S.managers.map(m=>`<button class="ch ${sh.mgr===m.id?"on":""}" data-act="sxm" data-v="${m.id}">${esc(m.name)}</button>`).join("")+`<button class="ch" data-act="sxamt" aria-label="Добавить менеджера">＋</button>`+(sh.addm?`<input id="sx-nm" placeholder="Имя менеджера" style="width:150px"><button class="ch on" data-act="sxam">Добавить</button>`:"");
+$("#sx-p").innerHTML=Object.keys(PR).map(k=>`<button class="ch ${k} ${sh.prio===k?"on":""}" data-act="sxp" data-v="${k}">${PR[k]}</button>`).join("");
+$("#sx-k").checked=sh.task;
+$("#sx-r").innerHTML=sh.rop?`<span class="lb">Контролирует:</span>`+SPK.map(n=>`<button class="ch ${sh.ctrl===n?"on":""}" data-act="sxc" data-v="${n}">${n}</button>`).join(""):"";
+const dd=sh.due.slice(0,10),h=+sh.due.slice(11,13),mi=sh.due.slice(14,16),WD=["Вс","Пн","Вт","Ср","Чт","Пт","Сб"];
+const days=[...Array(8)].map((_,k)=>{const d=new Date();d.setDate(d.getDate()+k);return [loc(d).slice(0,10),k===0?"Сегодня":k===1?"Завтра":WD[d.getDay()]+" "+d.getDate()]});
+$("#sx-q").innerHTML=`<button class="ch ${sh.due?"on":""}" data-act="sxdo">⏰ ${sh.due?fmt(sh.due):"Срок: нет"} ▾</button>`+(sh.dueOpen?`<div style="display:grid;gap:6px;margin-top:6px"><div class="dts"><button class="ch" data-act="sxdd" data-v="">Без срока</button><button class="ch" data-act="sxdd" data-v="+1">+1 ч</button>${days.map(d=>`<button class="ch ${dd===d[0]?"on":""}" data-act="sxdd" data-v="${d[0]}">${d[1]}</button>`).join("")}</div><div class="hrs">${[9,10,11,12,13,14,15,16,17,18,19,20].map(x=>`<button class="ch ${h===x&&dd?"on":""}" data-act="sxh" data-v="${x}">${x}</button>`).join("")}</div><div class="mns">${["00","15","30","45"].map(x=>`<button class="ch ${mi===x&&dd?"on":""}" data-act="sxmn" data-v="${x}">:${x}</button>`).join("")}</div><input type="datetime-local" id="sx-du" value="${sh.due}"></div>`:"")}
+function sxsave(){if(voiceSession&&voiceSession.target==="sx-t")endVoice();const t=$("#sx-t").value.trim();if(!t)return toast("Напишите, что произошло");if(!sh.mgr)return toast("Выберите менеджера");
+const m=S.managers.find(x=>x.id===sh.mgr),wl=$("#sx-w").value.trim(),car=$("#sx-a").value.trim();let i=sh.id&&find(sh.id);
+if(i){Object.assign(i,{text:t,mgr:sh.mgr,mn:m.name,prio:sh.prio,due:sh.due,wl,car});if(sh.task&&!i.task){i.task=true;i.st="new"}if(sh.rop)i.ctrl=sh.ctrl||i.ctrl;log(i,"Запись изменена")}
+else{const task=sh.task||sh.rop;i={id:uid(),text:t,mgr:sh.mgr,mn:m.name,author:S.user,at:Date.now(),prio:sh.prio,task,st:"new",due:sh.due,ctrl:task?(sh.rop?sh.ctrl:SPK.includes(S.user)?S.user:""):"",fl:{},wl,car,comments:[],hist:[],result:"",rop:sh.rop,seen:[]};log(i,sh.rop?"Поручение создано":"Создано");S.items.push(i);ui.open=null}
+closeSheet();up();toast("Сохранено")}
+const closeSheet=()=>{if(voiceSession&&voiceSession.target==="sx-t")endVoice();$("#sheet").innerHTML="";sh=null};
+
+/* ---------- голосовой ввод ---------- */
+const VoiceAPI=window.SpeechRecognition||window.webkitSpeechRecognition;
+let voiceSession=null;
+function endVoice(){
+ if(!voiceSession)return;
+ const v=voiceSession;voiceSession=null;
+ try{v.rec.onresult=null;v.rec.onerror=null;v.rec.onend=null;v.rec.stop()}catch(e){}
+ const b=document.querySelector(`[data-act="voice"][data-v="${v.target}"]`);
+ if(b){b.classList.remove("listening");b.textContent="🎙";b.setAttribute("aria-label","Продиктовать запись")}
+ const st=document.getElementById("voice-status-"+v.target);if(st)st.classList.remove("active");
+}
+function voiceMessage(target,message,active=false){
+ const el=document.getElementById("voice-status-"+target);
+ if(el){el.textContent=message;el.classList.toggle("active",active)}
+}
+function startVoice(target){
+ if(voiceSession){const current=voiceSession.target;endVoice();if(current===target){voiceMessage(target,"Запись остановлена. Проверь текст и сохрани.");return}}
+ const field=document.getElementById(target);if(!field)return;
+ if(!VoiceAPI){voiceMessage(target,"Браузер не поддерживает диктовку. Используй 🎤 на клавиатуре телефона.");toast("Распознавание речи недоступно в этом браузере");return}
+ const rec=new VoiceAPI();rec.lang="ru-RU";rec.interimResults=true;rec.continuous=true;rec.maxAlternatives=1;
+ const base=field.value.trim();const session={target,rec,base,final:""};voiceSession=session;
+ const button=document.querySelector(`[data-act="voice"][data-v="${target}"]`);
+ if(button){button.classList.add("listening");button.textContent="■";button.setAttribute("aria-label","Остановить диктовку")}
+ voiceMessage(target,"🔴 Слушаю… Нажми ■, чтобы остановить.",true);
+ rec.onresult=e=>{
+  if(voiceSession!==session)return;
+  let recognizedFinal="",interim="";
+  for(let i=0;i<e.results.length;i++){
+   const phrase=e.results[i][0]?.transcript||"";
+   if(e.results[i].isFinal)recognizedFinal+=(recognizedFinal?" ":"")+phrase.trim();
+   else interim+=(interim?" ":"")+phrase.trim();
+  }
+  session.final=recognizedFinal;
+  const current=document.getElementById(target);if(!current)return;
+  current.value=[session.base,recognizedFinal,interim].filter(Boolean).join(" ").trim();
+  current.dispatchEvent(new Event("input",{bubbles:true}));
+ };
+ rec.onerror=e=>{
+  if(voiceSession!==session)return;
+  const labels={"not-allowed":"Нет доступа к микрофону. Разреши микрофон в настройках браузера.","service-not-allowed":"Сервис распознавания недоступен.","audio-capture":"Микрофон не найден.","no-speech":"Речь не распознана. Попробуй ещё раз.","network":"Не удалось связаться с сервисом распознавания речи.","language-not-supported":"Русский язык не поддерживается этим браузером."};
+  const message=labels[e.error]||"Не удалось распознать речь.";
+  endVoice();voiceMessage(target,message);toast(message);
+ };
+ rec.onend=()=>{
+  if(voiceSession!==session)return;
+  endVoice();voiceMessage(target,"Диктовка завершена. Проверь текст и сохрани.");
+ };
+ try{rec.start()}catch(e){endVoice();voiceMessage(target,"Не удалось включить микрофон. Попробуй другой браузер.");toast("Не удалось запустить диктовку")}
+}
+
+/* ---------- действия ---------- */
+const A={
+voice:(id,v)=>startVoice(v),
+download:()=>{try{const b=new Blob([JSON.stringify(S,null,2)],{type:"application/json"});const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download="peredai_smenu_backup_"+loc(new Date()).slice(0,10)+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);toast("Копия скачана")}catch(e){toast("Не удалось скачать копию")}},
+qsave:()=>{if(voiceSession&&voiceSession.target==="quick")endVoice();const t=$("#quick")?.value.trim();if(!t)return toast("Напиши, что произошло");const mid=$("#qmgr")?.value||detect(t);if(!mid)return toast("Выбери менеджера");const m=S.managers.find(x=>x.id===mid);if(!m)return toast("Менеджер не найден");const prio=$("#qprio").value;const task=$("#qtask").checked;const i={id:uid(),text:t,mgr:mid,mn:m.name,author:S.user,at:Date.now(),prio,task,st:"new",due:"",ctrl:task&&SPK.includes(S.user)?S.user:"",fl:{},wl:"",car:"",comments:[],hist:[],result:"",rop:false,seen:[]};log(i,"Создано");S.items.push(i);up();toast("Запись добавлена")},
+tab:(id,v)=>{ui.tab=v;ui.open=null;render();scrollTo(0,0)},
+open:id=>{ui.open=ui.open===id?null:id;ui.done=null;ui.pa=null;render()},
+add:()=>openSheet({}),addrop:()=>openSheet({rop:true,prio:"imp",task:true}),
+edit:id=>{const i=find(id);openSheet({id,mgr:i.mgr,prio:i.prio,task:i.task,due:i.due,rop:i.rop,ctrl:i.ctrl,manual:true,addm:false})},
+sx:closeSheet,sxsave,
+sxm:(id,v)=>{sh.mgr=v;sh.manual=true;paint()},
+sxp:(id,v)=>{sh.prio=v;if(v!=="plan")sh.task=true;paint()},
+sxc:(id,v)=>{sh.ctrl=v;paint()},
+sxdo:()=>{sh.dueOpen=!sh.dueOpen;paint()},
+sxdd:(id,v)=>{if(!v)sh.due="";else if(v==="+1"){sh.due=loc(new Date(Date.now()+36e5));sh.task=true}else{sh.due=v+"T"+(sh.due?sh.due.slice(11,16):"18:00");sh.task=true}paint()},
+sxh:(id,v)=>{sh.due=(sh.due?sh.due.slice(0,10):loc(new Date()).slice(0,10))+"T"+String(v).padStart(2,"0")+":"+(sh.due?sh.due.slice(14,16):"00");sh.task=true;paint()},
+sxmn:(id,v)=>{sh.due=(sh.due?sh.due.slice(0,10):loc(new Date()).slice(0,10))+"T"+(sh.due?sh.due.slice(11,13):"18")+":"+v;sh.task=true;paint()},
+sxamt:()=>{sh.addm=!sh.addm;paint()},
+sxam:()=>{const n=$("#sx-nm").value.trim();if(!n)return;const m={id:uid(),name:n};S.managers.push(m);sh.mgr=m.id;sh.manual=true;sh.addm=false;save();paint()},
+st:(id,v)=>{const i=find(id);if(v==="done"){ui.done=id;return render()}i.st=v;i.task=true;log(i,"Статус: "+ST[v]);up()},
+fin:id=>{const i=find(id),r=($("#rs").value||"").trim();if(!r)return toast("Укажи результат выполнения");i.st="done";i.result=r;log(i,"Выполнена"+(r?": "+r:""));ui.done=null;up()},
+pr:(id,v)=>{const i=find(id);i.prio=v;log(i,"Приоритет: "+PR[v]);up()},
+fl:(id,v)=>{const i=find(id);i.fl=i.fl||{};const c=i.fl[v];i.fl[v]=c==null?true:c===true?false:null;log(i,FL[v]+": "+(i.fl[v]==null?"сброшено":i.fl[v]?"да":"нет"));up()},
+totask:id=>{const i=find(id);i.task=true;i.st="new";if(!i.ctrl&&SPK.includes(S.user))i.ctrl=S.user;log(i,"Взято на контроль");up()},
+cm:id=>{const v=$("#cm").value.trim();if(!v)return;const i=find(id);(i.comments=i.comments||[]).push({a:S.user,t:v,at:Date.now()});log(i,"Комментарий");up()},
+del:id=>{if(ui.pa!==id){ui.pa=id;return render()}S.items=S.items.filter(x=>x.id!==id);ui.pa=null;ui.open=null;up()},
+fst:(id,v)=>{ui.fst=v;render()},mine:()=>{ui.mine=!ui.mine;render()},
+bell:()=>{const a=alerts();$("#sheet").innerHTML=`<div class="ov" data-act="sx"></div><div class="sh"><h2>Уведомления</h2>${a.map(x=>`<button class="al ${x.c}" data-act="go" data-v="${x.tab}">${x.t}</button>`).join("")||`<p class="mu">Всё спокойно.</p>`}<p class="mu">Работают, пока приложение открыто. На закрытый браузер они не приходят: для этого нужен сервер.</p></div>`;S.items.forEach(i=>{if(i.rop&&!(i.seen||[]).includes(S.user))(i.seen=i.seen||[]).push(S.user)});save();badge()},
+go:(id,v)=>{closeSheet();ui.tab=v;render()},
+hosend:()=>{if(!SPK.includes(S.user))return toast("Передают смену только СПК");if(S.ho.some(x=>!x.acc))return toast("Предыдущая передача ещё не принята");const l=S.ho[S.ho.length-1],s=summ(l?l.at:0),a=s.act;S.ho.push({id:uid(),from:S.user,to:SPK.find(n=>n!==S.user),at:Date.now(),note:($("#hn").value||"").trim(),acc:false,snap:a.map(i=>({id:i.id,t:i.text,m:mname(i),p:i.prio,s:i.st})),cnt:{act:a.length,crit:s.crit.length,od:s.od.length,soon:s.soon.length,neu:s.neu.length}});up();toast("Смена передана")},
+hoacc:id=>{const h=S.ho.find(x=>x.id===id);if(!h||h.acc||h.to!==S.user)return toast("Эту смену может принять только назначенный СПК");h.acc=true;h.accBy=S.user;h.accAt=Date.now();h.accNote=($("#hn").value||"").trim();h.snap.forEach(s=>{const i=find(s.id);if(i&&active(i)&&(!i.ctrl||i.ctrl===h.from)){i.ctrl=S.user;log(i,"Контроль смены принял "+S.user)}});up();toast("Смена принята")},
+addm:()=>{const n=$("#nm").value.trim();if(!n)return;S.managers.push({id:uid(),name:n});up()},
+delm:id=>{if(ui.pa!==id){ui.pa=id;return render()}const m=S.managers.find(x=>x.id===id);S.items.forEach(i=>{if(i.mgr===id)i.mn=m?.name||i.mn||"Удалённый менеджер"});S.managers=S.managers.filter(x=>x.id!==id);ui.pa=null;up()},
+exp:()=>{const j=JSON.stringify(S);$("#bk").value=j;$("#bk").select();try{navigator.clipboard.writeText(j).then(()=>toast("Копия скопирована"),()=>toast("Скопируйте текст из поля вручную"))}catch(e){toast("Скопируйте текст из поля вручную")}},
+imp:()=>{try{const d=JSON.parse($("#bk").value);if(!Array.isArray(d.items)||!Array.isArray(d.managers))throw 0;S=Object.assign(def(),d);theme();up();toast("Данные восстановлены")}catch(e){toast("Вставьте в поле корректную копию")}},
+rest:()=>{try{const b=JSON.parse(localStorage.getItem(BK));S=Object.assign(def(),b.d);theme();up();toast("Восстановлено на "+fmt(b.at))}catch(e){toast("Автокопии пока нет")}}
+};
+document.addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(b&&A[b.dataset.act])A[b.dataset.act](b.dataset.id,b.dataset.v,b)});
+document.addEventListener("input",e=>{const t=e.target;
+if(t.id==="q"){ui.q=t.value;$("#list").innerHTML=feedList()}
+if(t.id==="quick"){const m=detect(t.value);if(m&&$("#qmgr"))$("#qmgr").value=m}
+ if(t.id==="sx-t"&&sh&&!sh.manual){const m=detect(t.value);if(m&&m!==sh.mgr){sh.mgr=m;paint()}}});
+document.addEventListener("keydown",e=>{const t=e.target;
+if(e.key==="Enter"){if(t.id==="cm")t.nextElementSibling.click();if(t.id==="rs")t.nextElementSibling.click();if(t.id==="nm")A.addm();if(t.id==="sx-nm")A.sxam();if(t.id==="sx-t"&&(e.ctrlKey||e.metaKey))sxsave()}});
+document.addEventListener("change",async e=>{const t=e.target,c=t.dataset.ch,id=t.dataset.id,i=id&&find(id);
+if(t.id==="backupFile"){const f=t.files&&t.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!Array.isArray(d.items)||!Array.isArray(d.managers)||!Array.isArray(d.ho))throw Error("format");if(!confirm("Заменить все локальные данные из резервной копии?"))return;S=Object.assign(def(),d);theme();up();toast("Копия восстановлена")}catch(err){toast("Неверный формат копии")}finally{t.value=""}return}
+if(t.id==="sx-du"){sh.due=t.value;if(t.value)sh.task=true;paint()}
+if(t.id==="sx-k")sh.task=t.checked;
+if(c==="who"){if(!["Паша","Дима","Артём"].includes(t.value))return;S.user=t.value;ui.open=null;up()}
+if(c==="fm"){ui.mgr=t.value;render()}if(c==="fp"){ui.prio=t.value;render()}
+if(c==="ctrl"){i.ctrl=t.value;log(i,"Контроль: "+(t.value||"никто"));up()}
+if(c==="due"){i.due=t.value;log(i,"Срок: "+(t.value?fmt(t.value):"снят"));up()}
+if(c==="wl"){i.wl=t.value.trim();save()}if(c==="car"){i.car=t.value.trim();save()}
+if(c==="rn"){const m=S.managers.find(x=>x.id===id),v=t.value.trim();if(v){m.name=v;save()}else t.value=m.name}
+if(c==="theme"){S.theme=t.value;theme();save()}if(c==="lead"){S.lead=+t.value;up()}});
+theme();render();setInterval(badge,6e4);
+</script></body></html>
